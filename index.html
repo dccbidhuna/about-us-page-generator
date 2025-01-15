@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us Page Generator Tool</title>
+    <link rel="stylesheet" href="styles.css">
+	<style>:root {
+    --primary-color: #3498db;
+    --secondary-color: #2c3e50;
+    --background-color: #ecf0f1;
+    --text-color: #333;
+    --border-radius: 5px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+header {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    main {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+section {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+#preview-content {
+    margin-bottom: 1rem;
+    white-space: pre-wrap;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+footer a {
+    color: var(--primary-color);
+}
+
+</style>
+</head>
+<body>
+    <header>
+        <h1>Advanced About Us Page Generator Tool</h1>
+    </header>
+    <main>
+        <section id="generator">
+            <form id="about-us-form">
+                <div class="form-group">
+                    <label for="company-name">Your Name:</label>
+                    <input type="text" id="company-name" name="company-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="industry">Website Address:</label>
+                    <input type="text" id="industry" name="industry" required>
+                </div>
+                <div class="form-group">
+                    <label for="year-founded">Year Founded:</label>
+                    <input type="number" id="year-founded" name="year-founded" required>
+                </div>
+                <div class="form-group">
+                    <label for="mission">Qualification:</label>
+                    <textarea id="mission" name="mission" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="values">Email Id:</label>
+                    <input type="text" id="values" name="values" required>
+                </div>
+                <div class="form-group">
+                    <label for="achievements">Experience Any (comma-separated):</label>
+                    <input type="text" id="achievements" name="achievements" required>
+                </div>
+                <button type="submit">Generate About Us</button>
+            </form>
+        </section>
+        <section id="preview">
+            <h2>Preview</h2>
+            <div id="preview-content"></div>
+            <button id="copy-button">Copy to Clipboard</button>
+        </section>
+    </main>
+    <footer>
+    </footer>
+    <script>
+	document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('about-us-form');
+    const previewContent = document.getElementById('preview-content');
+    const copyButton = document.getElementById('copy-button');
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        generateAboutUs();
+    });
+
+    // Real-time preview updates
+    form.addEventListener('input', () => {
+        generateAboutUs();
+    });
+
+    copyButton.addEventListener('click', () => {
+        copyToClipboard();
+    });
+
+    function generateAboutUs() {
+        const companyName = document.getElementById('company-name').value;
+        const industry = document.getElementById('industry').value;
+        const yearFounded = document.getElementById('year-founded').value;
+        const mission = document.getElementById('mission').value;
+        const values = document.getElementById('values').value.split(',').map(value => value.trim());
+        const achievements = document.getElementById('achievements').value.split(',').map(achievement => achievement.trim());
+
+        const aboutUsContent = `
+About ${companyName}
+
+${companyName} is a leading company in the ${industry} industry, founded in ${yearFounded}. With a strong commitment to excellence and innovation, we have established ourselves as a trusted name in our field.
+
+Qualification:
+${mission}
+
+Email Id:
+${values.map(value => `- ${value}`).join('\n')}
+
+Experience:
+${achievements.map(achievement => `- ${achievement}`).join('\n')}
+
+At ${companyName}, we are dedicated to pushing the boundaries of what's possible in the ${industry} sector. Our team of experts works tirelessly to deliver cutting-edge solutions that meet the evolving needs of our clients and partners.
+
+With a history spanning ${new Date().getFullYear() - yearFounded} years, we have built a reputation for reliability, integrity, and forward-thinking. As we continue to grow and expand our horizons, we remain committed to our founding principles and the pursuit of excellence in everything we do.
+
+Join us on our journey as we shape the future of ${industry} and make a lasting impact on the world around us.
+        `;
+
+        previewContent.textContent = aboutUsContent.trim();
+    }
+
+    function copyToClipboard() {
+        const tempTextArea = document.createElement('textarea');
+        tempTextArea.value = previewContent.textContent;
+        document.body.appendChild(tempTextArea);
+        tempTextArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempTextArea);
+
+        copyButton.textContent = 'Copied!';
+        setTimeout(() => {
+            copyButton.textContent = 'Copy to Clipboard';
+        }, 2000);
+    }
+});
+
+
+	</script>
+</body>
+</html>
+
